@@ -1,6 +1,5 @@
 package org.sopt.secondSeminar.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.sopt.secondSeminar.domain.Member;
 import org.sopt.secondSeminar.dto.MemberCreateDto;

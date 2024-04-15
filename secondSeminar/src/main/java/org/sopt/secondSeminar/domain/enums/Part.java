@@ -8,5 +8,4 @@ public enum Part {
     IOS,
     DESIGN,
     PLAN
-    ;
 }
