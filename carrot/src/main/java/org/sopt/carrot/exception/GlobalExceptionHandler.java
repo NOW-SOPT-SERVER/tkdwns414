@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.sopt.carrot.dto.common.ApiResponse;
 import org.sopt.carrot.dto.type.ErrorCode;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -16,6 +17,13 @@ public class GlobalExceptionHandler {
     public ApiResponse<?> handleNoPageFoundException(Exception e) {
         log.error("GlobalExceptionHandler catch NoHandlerFoundException : {}", e.getMessage());
         return ApiResponse.fail(ErrorCode.NOT_FOUND_END_POINT);
+    }
+
+    // 헤더가 누락된 요청에 대한 예외
+    @ExceptionHandler(value = {MissingRequestHeaderException.class})
+    public ApiResponse<?> handleMissingRequestHeaderException(Exception e) {
+        log.error("GlobalExceptionHandler catch MissingRequestHeaderException : {}", e.getMessage());
+        return ApiResponse.fail(ErrorCode.MISSING_REQUEST_HEADER);
     }
 
     // 커스텀 예외
