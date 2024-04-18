@@ -21,11 +21,13 @@ public class Member {
 
     private int age;
 
+    private Member(String name, Part part, int age) {
+        this.name = name;
+        this.part = part;
+        this.age = age;
+    }
+
     public static Member create(String name, Part part, int age) {
-        Member member = new Member();
-        member.name = name;
-        member.part = part;
-        member.age = age;
-        return member;
+        return new Member(name, part, age);
     }
 }
