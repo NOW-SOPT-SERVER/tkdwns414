@@ -47,7 +47,7 @@ public class Product {
     // todo: 거래 희망 장소, 이미지, 생성일, 카테고리
 
     @Builder
-    public Product(User user, EStatus status, String title, boolean canNegotiate, int price, ETradingType tradingType, boolean canReceiveGiveAway, String description) {
+    private Product(User user, EStatus status, String title, boolean canNegotiate, int price, ETradingType tradingType, boolean canReceiveGiveAway, String description) {
         this.user = user;
         this.status = status;
         this.title = title;

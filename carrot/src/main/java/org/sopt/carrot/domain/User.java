@@ -2,6 +2,7 @@ package org.sopt.carrot.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,9 +19,14 @@ public class User {
     @Column(name = "nickname", nullable = false)
     private String nickname;
 
+    @Builder
+    private User(String nickname) {
+        this.nickname = nickname;
+    }
+
     public static User create(String nickname) {
-        User user = new User();
-        user.nickname = nickname;
-        return user;
+        return User.builder()
+                .nickname(nickname)
+                .build();
     }
 }
