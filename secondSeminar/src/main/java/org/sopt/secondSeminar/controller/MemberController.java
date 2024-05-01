@@ -13,27 +13,27 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/members")
+@RequestMapping("/api/v1")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping
+    @PostMapping("/members")
     public ResponseEntity<Void> createMember(
             @RequestBody MemberCreateDto memberCreate
     ) {
         return ResponseEntity.created(URI.create(memberService.createMember(memberCreate))).build();
     }
 
-    @GetMapping("/{memberId}")
+    @GetMapping("/members/{memberId}")
     public ResponseEntity<MemberFindDto> findMemberById(
             @PathVariable Long memberId
     ) {
-      return ResponseEntity.ok(memberService.findMemberById(memberId));
+      return ResponseEntity.ok(memberService.findMember(memberId));
     }
 
 
-    @DeleteMapping("/{memberId}")
+    @DeleteMapping("/members/{memberId}")
     public ResponseEntity<Void> deleteMemberById(
             @PathVariable Long memberId
     ) {
@@ -41,7 +41,7 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/members")
     public ResponseEntity<List<MemberDetailDto>> findAllMembers() {
         return ResponseEntity.ok(memberService.findAllMembers());
     }

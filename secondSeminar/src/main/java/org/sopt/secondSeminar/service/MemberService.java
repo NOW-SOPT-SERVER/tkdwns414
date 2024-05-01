@@ -5,11 +5,13 @@ import org.sopt.secondSeminar.domain.Member;
 import org.sopt.secondSeminar.dto.MemberCreateDto;
 import org.sopt.secondSeminar.dto.MemberDetailDto;
 import org.sopt.secondSeminar.dto.MemberFindDto;
+import org.sopt.secondSeminar.exception.ErrorMessage;
+import org.sopt.secondSeminar.exception.NotFoundException;
 import org.sopt.secondSeminar.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
@@ -17,24 +19,37 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    @Transactional
     public String createMember(MemberCreateDto memberCreateDto) {
         Member member = Member.create(memberCreateDto.name(), memberCreateDto.part(), memberCreateDto.age());
         memberRepository.save(member);
         return member.getId().toString();
     }
 
-    public MemberFindDto findMemberById(Long memberId) {
-        return MemberFindDto.of(memberRepository.findByIdOrThrow(memberId));
+    @Transactional(readOnly = true)
+    public MemberFindDto findMember(Long memberId) {
+        return MemberFindDto.of(findMemberById(memberId));
 
     }
 
+    @Transactional
     public void deleteMemberById(Long memberId) {
-        memberRepository.delete(memberRepository.findByIdOrThrow(memberId));
+        memberRepository.delete(findMemberById(memberId));
     }
 
+    @Transactional(readOnly = true)
     public List<MemberDetailDto> findAllMembers() {
         return memberRepository.findAll().stream()
                 .map(MemberDetailDto::of)
                 .toList();
     }
+
+    public Member findMemberById(
+            Long memberId
+    ) {
+        return memberRepository.findById(memberId).orElseThrow(
+                () -> new NotFoundException(ErrorMessage.MEMBER_NOT_FOUND_BY_ID_EXCEPTION)
+        );
+    }
+
 }
